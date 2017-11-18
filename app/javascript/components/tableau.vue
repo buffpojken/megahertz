@@ -52,7 +52,19 @@ export default {
   mounted: function(){
     $(this.$el).find('#calendar-1').fullCalendar({
       defaultView: 'agendaDay',
-      heigth:'auto'
+      heigth:'auto', 
+      locale: 'sv',
+      allDaySlot: false,
+      header: {
+        left: 'prev',
+        center: 'title',
+        right:'next'
+      },
+      titleFormat: 'YYYY-MM-DD',
+      validRange: {
+        start: '2017-05-01',
+        end: '2017-06-01'
+      }
     })
   }
 }
