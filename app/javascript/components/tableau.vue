@@ -49,7 +49,31 @@ export default {
       message: "Hello Vue!"
     }
   },
+  methods: {
+    drop: function(ev){
+      console.log(ev);
+    }, 
+    dragging: function(ev){
+      $(ev.target).data('event', {
+        duration: '00:30',
+        title: 'Mungo',
+        stick: true
+      })
+    }
+  },
   mounted: function(){
+
+    $(".mdl-list__item").draggable({
+      revert: true, 
+      revertDuration: 0,
+      start: function(event, ui){
+        $(event.target).data('event', {
+          duration: '00:30',
+          title: 'Mungo'
+        })
+      }
+    });
+
     $(this.$el).find('#calendar-1').fullCalendar({
       defaultView: 'agendaDay',
       heigth:'auto', 
@@ -60,11 +84,20 @@ export default {
         center: 'title',
         right:'next'
       },
+      events: [],
+      droppable: true,
+      eventStartEditable: true,
+      drop: function(date){
+
+      },
+      eventReceive: function(ev){
+        console.log(ev);
+      },
       titleFormat: 'YYYY-MM-DD',
-      validRange: {
-        start: '2017-05-01',
-        end: '2017-06-01'
-      }
+      // validRange: {
+      //   start: '2017-05-01',
+      //   end: '2017-06-01'
+      // }
     })
   }
 }
