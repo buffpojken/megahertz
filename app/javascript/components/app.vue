@@ -19,6 +19,10 @@
     <main class="mdl-layout__content">
       <component :is="currentView"></component>
     </main>
+    <div id="snackbar-container" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
   </div>
 
 </template>

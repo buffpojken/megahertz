@@ -32,6 +32,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'webpacker'
 gem 'foreman'
+gem 'faker'
+gem 'seedbank'
 
 
 # Use Capistrano for deployment

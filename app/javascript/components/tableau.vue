@@ -4,33 +4,15 @@
     <div class="page-content">
         <div class="mdl-grid">
           <div class="mdl-cell mdl-cell--4-col mdl-cell--2-offset-desktop">
+
             <form action="#">
               <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="sample1">
-                <label class="mdl-textfield__label" for="sample1">Text...</label>
+                <input class="mdl-textfield__input" placeholder="Search..." v-on:input="performSearch" type="search">
+                <label class="mdl-textfield__label" for="sample1">Search</label>
               </div>
             </form>
 
-            <ul class="demo-list-icon mdl-list">
-              <li class="mdl-list__item">
-                <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">person</i>
-                Bryan Cranston
-            </span>
-              </li>
-              <li class="mdl-list__item">
-                <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">person</i>
-                Aaron Paul
-              </span>
-              </li>
-              <li class="mdl-list__item">
-                <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">person</i>
-                Bob Odenkirk
-              </span>
-              </li>
-            </ul>
+            <search-results v-if="searchResults.length > 0" :results="searchResults"></search-results>
 
           </div>
           <div class="mdl-cell mdl-cell--4-col">
@@ -39,42 +21,49 @@
         </div>
     </div>
   </section>
-
 </template>
 
 <script>
+
+import SearchResults from './search/search_results.vue'
+
 export default {
   data: function () {
     return {
-      message: "Hello Vue!"
+      searchResults: []
     }
   },
+  components:{
+    'search-results': SearchResults
+  },
   methods: {
-    drop: function(ev){
-      console.log(ev);
-    }, 
-    dragging: function(ev){
-      $(ev.target).data('event', {
-        duration: '00:30',
-        title: 'Mungo',
-        stick: true
+    performSearch: function(ev){
+      console.log(ev.target.value)
+    },
+    fetchProgram: function(id){
+      $.ajax({
+        url: `/programs/${id}`,
+        dataType: 'json', 
+        success: (data) => {
+          this.searchResults = Array(data)
+        }, 
+        error: function(){
+
+        }
       })
     }
   },
   mounted: function(){
-
-    $(".mdl-list__item").draggable({
-      revert: true, 
-      revertDuration: 0,
-      start: function(event, ui){
-        $(event.target).data('event', {
-          duration: '00:30',
-          title: 'Mungo'
-        })
+    let that = this;
+    $(".mdl-textfield__input").autocomplete({
+      serviceUrl: '/search',
+      onSelect: function(suggestion){
+        this.value = null
+        that.fetchProgram(suggestion.data)
       }
     });
 
-    $(this.$el).find('#calendar-1').fullCalendar({
+    let calendar = $(this.$el).find('#calendar-1').fullCalendar({
       defaultView: 'agendaDay',
       heigth:'auto', 
       locale: 'sv',
@@ -86,12 +75,13 @@ export default {
       },
       events: [],
       droppable: true,
+      eventOverlap: false,
+      snapDuration: 1,
       eventStartEditable: true,
-      drop: function(date){
-
-      },
-      eventReceive: function(ev){
-        console.log(ev);
+      drop: function(date, jsEvent) {
+        document.querySelector('#snackbar-container').MaterialSnackbar.showSnackbar({
+          message: "Slot added."
+        });
       },
       titleFormat: 'YYYY-MM-DD',
       // validRange: {
@@ -99,6 +89,7 @@ export default {
       //   end: '2017-06-01'
       // }
     })
+
   }
 }
 </script>
