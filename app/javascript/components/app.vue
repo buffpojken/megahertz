@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     setView: function(key){
-      console.log(key)
       this.currentView = key
     }
   },
