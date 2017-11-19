@@ -70,8 +70,7 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
+.mdl-textfield__input{
+  outline: none;
 }
 </style>

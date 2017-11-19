@@ -46,7 +46,7 @@ export default {
   data: function () {
     return {
       message: "Hello Vue!", 
-      currentView: 'database'
+      currentView: 'tableau'
     }
   }
 }

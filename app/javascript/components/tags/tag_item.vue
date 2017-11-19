@@ -1,6 +1,6 @@
 <template>
   <span class="mdl-chip" v-bind:class="{'mdl-chip--deletable': editable}" :data-event="eventPackage">
-      <span class="mdl-chip__text">{{tag}}</span>
+      <span class="mdl-chip__text">{{tag.name}}</span>
       <button v-if="editable" type="button" class="mdl-chip__action"><i class="material-icons">cancel</i></button>
   </span>
 </template>
@@ -25,7 +25,7 @@ export default {
   computed: {
     eventPackage: function(){
       let data = Object.assign({}, {
-        title:      this.tag,
+        title:      this.tag.name,
         type:       'tag', 
         editable:   true, 
         className:  'tag-item',

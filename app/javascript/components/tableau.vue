@@ -11,7 +11,7 @@
               </div>
             </form>
 
-            <search-results v-if="searchResults.length > 0" :results="searchResults" :draggable="true"></search-results>
+            <search-results v-if="searchResults.length > 0" :results="searchResults" :draggable="true" @itemClicked="searchResultClicked"></search-results>
 
             <h4 class="display-2">Tags</h4>
             <p>Drag these into the schedule to autofill that slot with items tagged with the used tag.</p>
@@ -35,7 +35,7 @@ export default {
   data: function () {
     return {
       searchResults: [], 
-      tags: ["mungo", "kalle", "hugo"]
+      tags: [{name:"skymningsläge"}, {name:"gryningsläge"}, {name:"nyheter"}]
     }
   },
   components:{
@@ -43,6 +43,11 @@ export default {
     'tag-cloud': TagCloud
   },
   methods: {
+    searchResultClicked: function(item){
+      document.querySelector('#snackbar-container').MaterialSnackbar.showSnackbar({
+        message: `Show metadata for ${item.title}`
+      });
+    },
     performSearch: function(ev){
       console.log(ev.target.value)
     },
@@ -79,16 +84,21 @@ export default {
         center: 'title',
         right:'next'
       },
+      height:600,
       events: [],
       droppable: true,
       eventOverlap: false,
       snapDuration: 1,
-      eventStartEditable: true,
-      drop: function(date, jsEvent) {
+      eventClick: function(event){
         document.querySelector('#snackbar-container').MaterialSnackbar.showSnackbar({
-          message: "Slot added."
+          message: "Remove event",
+          actionHandler: function(){
+            calendar.fullCalendar('removeEvents', event._id)
+          },
+          actionText: 'Yes'
         });
       },
+      eventStartEditable: true,
       titleFormat: 'YYYY-MM-DD',
       // validRange: {
       //   start: '2017-05-01',

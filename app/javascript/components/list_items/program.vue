@@ -35,6 +35,7 @@ export default {
     eventPackage: function(){
       let data = Object.assign({}, {
         title: this.item.title, 
+        id:   this.item.id,
         duration: this.item.duration, 
         className: 'program-item'
       })
