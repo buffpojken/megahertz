@@ -1,5 +1,5 @@
 <template>
-    <li class="mdl-list__item" :data-event="eventPackage">
+    <li class="mdl-list__item" :data-event="eventPackage" v-on:click="itemClicked(item)">
       <span class="mdl-list__item-primary-content">
       <i class="material-icons mdl-list__item-icon">person</i>
       {{item.title}}
@@ -10,19 +10,26 @@
 <script>
 
 export default {
-  props: ['item'], 
+  props: ['item', 'draggable'], 
   mounted: function(){
-    $(this.$el).draggable({
-      revert: true, 
-      revertDuration: 0, 
-      helper: 'clone',
-      stop: function(event, ui){
-        console.log(ui.helper)
-      }
-    });
+    if(this.draggable){
+      $(this.$el).draggable({
+        revert: true, 
+        revertDuration: 0, 
+        helper: 'clone',
+        stop: function(event, ui){
+          console.log(ui.helper)
+        }
+      });
+    }
   },
   updated: function(){
     this.$el.dataset.event = this.eventPackage
+  },
+  methods: {
+    itemClicked: function(itm){
+      this.$emit('itemClicked', itm)
+    }
   },
   computed: {
     eventPackage: function(){

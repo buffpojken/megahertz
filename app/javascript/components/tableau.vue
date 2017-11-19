@@ -1,5 +1,4 @@
 <template>
-
   <section class="mdl-layout__tab-panel is-active">
     <div class="page-content">
         <div class="mdl-grid">
@@ -12,7 +11,7 @@
               </div>
             </form>
 
-            <search-results v-if="searchResults.length > 0" :results="searchResults"></search-results>
+            <search-results v-if="searchResults.length > 0" :results="searchResults" :draggable="true"></search-results>
 
             <h4 class="display-2">Tags</h4>
             <p>Drag these into the schedule to autofill that slot with items tagged with the used tag.</p>

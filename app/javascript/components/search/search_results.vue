@@ -1,6 +1,6 @@
 <template>
   <ul class="demo-list-icon mdl-list">
-    <component :is="currentItem(result)" v-for="result in results" :item="result" :key="result.id"></component>
+    <component :is="currentItem(result)" v-for="result in results" :item="result" :draggable="draggable" :key="result.id" @itemClicked="itemClicked"></component>
   </ul>
 </template>
 
@@ -14,14 +14,17 @@ export default {
     'program-item': ProgramItem, 
     'tag-item': TagItem
   },
-  props: ['results'], 
+  props: ['results', 'draggable'], 
   methods: {
     currentItem: function(item){
-      if(item.type == "program"){
-        return "program-item"
-      }else{
+      if(item.type == "tag"){
         return "tag-item"
+      }else{
+        return "program-item"
       }
+    },
+    itemClicked: function(itm){
+      this.$emit('itemClicked', itm)
     }
   },
   data: function () {
