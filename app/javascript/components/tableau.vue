@@ -14,6 +14,10 @@
 
             <search-results v-if="searchResults.length > 0" :results="searchResults"></search-results>
 
+            <h4 class="display-2">Tags</h4>
+            <p>Drag these into the schedule to autofill that slot with items tagged with the used tag.</p>
+            <tag-cloud :tags="tags"></tag-cloud>
+
           </div>
           <div class="mdl-cell mdl-cell--4-col">
             <div id="calendar-1"></div>
@@ -26,15 +30,18 @@
 <script>
 
 import SearchResults from './search/search_results.vue'
+import TagCloud from './tags/tag_cloud.vue'
 
 export default {
   data: function () {
     return {
-      searchResults: []
+      searchResults: [], 
+      tags: ["mungo", "kalle", "hugo"]
     }
   },
   components:{
-    'search-results': SearchResults
+    'search-results': SearchResults,
+    'tag-cloud': TagCloud
   },
   methods: {
     performSearch: function(ev){
@@ -95,8 +102,5 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
+
 </style>

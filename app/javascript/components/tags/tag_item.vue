@@ -1,24 +1,22 @@
 <template>
-    <li class="mdl-list__item" :data-event="eventPackage">
-      <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-icon">person</i>
-      {{item.title}}
+  <span class="mdl-chip" v-bind:class="{'mdl-chip--deletable': editable}" :data-event="eventPackage">
+      <span class="mdl-chip__text">{{tag}}</span>
+      <button v-if="editable" type="button" class="mdl-chip__action"><i class="material-icons">cancel</i></button>
   </span>
-    </li>
 </template>
 
 <script>
 
 export default {
-  props: ['item'], 
+  props: ['tag', 'editable'], 
+  methods: {
+
+  },
   mounted: function(){
     $(this.$el).draggable({
       revert: true, 
       revertDuration: 0, 
       helper: 'clone',
-      stop: function(event, ui){
-        console.log(ui.helper)
-      }
     });
   },
   updated: function(){
@@ -27,9 +25,11 @@ export default {
   computed: {
     eventPackage: function(){
       let data = Object.assign({}, {
-        title: this.item.title, 
-        duration: this.item.duration, 
-        className: 'program-item'
+        title:      this.tag,
+        type:       'tag', 
+        editable:   true, 
+        className:  'tag-item',
+        duration:   '00:30'
       })
       return JSON.stringify(data)
     }
