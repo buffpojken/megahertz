@@ -1,7 +1,9 @@
 <template>
 
   <section class="mdl-layout__tab-panel is-active">
-    <div class="page-content">Settings</div>
+    <div class="page-content">
+      <p>Not implemented yet.</p>
+    </div>
   </section>
 
 </template>
@@ -17,8 +19,5 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
+
 </style>

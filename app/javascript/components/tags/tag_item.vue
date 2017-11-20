@@ -8,16 +8,18 @@
 <script>
 
 export default {
-  props: ['tag', 'editable'], 
+  props: ['tag', 'editable', 'draggable'], 
   methods: {
 
   },
   mounted: function(){
-    $(this.$el).draggable({
-      revert: true, 
-      revertDuration: 0, 
-      helper: 'clone',
-    });
+    if(this.draggable){
+      $(this.$el).draggable({
+        revert: true, 
+        revertDuration: 0, 
+        helper: 'clone',
+      });      
+    }
   },
   updated: function(){
     this.$el.dataset.event = this.eventPackage

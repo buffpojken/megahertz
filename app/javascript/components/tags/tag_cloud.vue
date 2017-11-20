@@ -1,6 +1,6 @@
 <template>
     <div>
-      <tag-item v-for="tag in tags" :tag="tag" :editable="editable" />
+      <tag-item v-for="tag in tags" :tag="tag" :draggable="draggable" :editable="editable" />
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 import TagItem from './tag_item.vue'
 
 export default {
-  props: ['tags', 'editable'], 
+  props: ['tags', 'editable', 'draggable'], 
   components: {
     'tag-item': TagItem
   },

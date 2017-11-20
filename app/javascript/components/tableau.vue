@@ -15,8 +15,15 @@
 
             <h4 class="display-2">Tags</h4>
             <p>Drag these into the schedule to autofill that slot with items tagged with the used tag.</p>
-            <tag-cloud :tags="tags"></tag-cloud>
-
+            <tag-cloud :tags="tags" :draggable="true"></tag-cloud>
+            <br /><br />
+            <hr>
+            <button v-if="transmitState == 0" @click="toggleTransmit" class="mdl-button mdl-js-button mdl-button--primary">
+              Transmit
+            </button>  
+            <button v-if="transmitState == 1" @click="toggleTransmit" class="mdl-button mdl-js-button mdl-button--primary">
+              Stop 
+            </button>       
           </div>
           <div class="mdl-cell mdl-cell--4-col">
             <div id="calendar-1"></div>
@@ -34,6 +41,7 @@ import TagCloud from './tags/tag_cloud.vue'
 export default {
   data: function () {
     return {
+      transmitState: 0,
       searchResults: [], 
       tags: [{name:"skymningsläge"}, {name:"gryningsläge"}, {name:"nyheter"}]
     }
@@ -43,6 +51,15 @@ export default {
     'tag-cloud': TagCloud
   },
   methods: {
+    toggleTransmit: function(){
+      if(this.transmitState == 0){
+        this.transmitState = 1
+      }else{
+        if(confirm('Är du säker?')){
+          this.transmitState = 0
+        }
+      }
+    },
     searchResultClicked: function(item){
       document.querySelector('#snackbar-container').MaterialSnackbar.showSnackbar({
         message: `Show metadata for ${item.title}`
@@ -88,6 +105,7 @@ export default {
       events: [],
       droppable: true,
       eventOverlap: false,
+      nowIndicator: true,
       snapDuration: 1,
       eventClick: function(event){
         document.querySelector('#snackbar-container').MaterialSnackbar.showSnackbar({
