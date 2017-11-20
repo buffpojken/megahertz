@@ -10,12 +10,17 @@
       <tag-cloud :tags="item.tags" :editable="false" />
     </div>
     <div class="mdl-card__actions mdl-card--border">
-      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="play">
-        Listen
-      </a>
       <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="edit">
         Edit
       </a>
+
+      <a v-if="canPlay" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="togglePlay">
+        {{stateCopy}}
+      </a>
+
+      <button v-else disabled class="mdl-button loading mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      </button>
+
     </div>
     <div class="mdl-card__menu">
       <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" v-on:click="close">
@@ -33,14 +38,33 @@ export default {
   props: ['item'], 
   components: {
     'tag-cloud': TagCloud
-  },
+  },  
   computed: {
     formattedDuration: function(){
       return moment.duration(this.item.duration, 'minutes').humanize()
     }, 
     exactDuration: function(){
       return `${this.item.duration} minuter`
+    }, 
+    stateCopy: function(){
+      if(this.state == 0){
+        return "Play"
+      }else{
+        return `Stop (${this.currentTime} / ${this.item.duration*60})`
+      }
     }
+  },
+  mounted: function(){
+    this.audioElement = new Audio(this.item.file_url); 
+    $(this.audioElement).on('canplay', (ev) => {
+      this.canPlay = true
+    }).on('play', (ev) => {
+      this.state = 1
+    }).on('pause', (ev) => {
+      this.state = 0
+    }).on('timeupdate', (ev) => {
+      this.currentTime = Math.floor(this.audioElement.currentTime)
+    })
   },
   methods: {
     edit: function(){
@@ -51,14 +75,21 @@ export default {
     close: function(){
       this.$emit('closeCard')
     }, 
-    play: function(){
-      var audio = new Audio(this.item.file_url);
-      audio.play();
+    togglePlay: function(){
+      if(this.state == 1){
+        this.audioElement.pause();
+        this.audioElement.currentTime = 0
+      }else{
+        this.audioElement.play()
+      }
     }
   },
   data: function () {
     return {
-
+      state:         0, 
+      currentTime:   0, 
+      duration:      0, 
+      canPlay:       false
     }
   }
 }
@@ -74,5 +105,10 @@ export default {
     margin-left:20px;
     font-size:13px;
     color:rgba(0,0,0,0.8);
+  }
+  .loading{
+    background-image:url(/assets/loader.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
   }
 </style>

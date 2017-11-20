@@ -19,7 +19,7 @@
           </div>
 
           <div class="mdl-cell mdl-cell--6-col">
-            <program-card :item="currentItem" @closeCard="closeCard" v-if="currentItem" />
+            <program-card :key="currentItem.id" :item="currentItem" @closeCard="closeCard" v-if="currentItem" />
           </div>
 
         </div>        
